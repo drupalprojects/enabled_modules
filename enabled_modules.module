@@ -1,0 +1,210 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * TODO: Enter file description here.
+ */
+
+/**
+ * Implementation of hook_block().
+ */
+function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $blocks['recently_enabled']['info'] = t('Recently enabled modules with administration links.');
+    $blocks['recently_disabled']['info'] = t('Recently disabled modules.');
+    return $blocks;
+  }
+  else if ($op == 'configure') {
+    // OPTIONAL: Enter form elements to add to block configuration screen, if required.    
+  }
+  else if ($op == 'save') {
+    // OPTIONAL: Add code to trigger when block configuration is saved, if required.
+  }
+  else if ($op == 'view') {
+    switch ($delta) {
+      case 'recently_enabled':
+        $block['subject'] = t('Recently enabled modules');
+        $block['content'] = t('TODO: Enter block content');
+        break;
+      case 'recently_disabled':
+        $block['subject'] = t('Recently disabled modules');
+        $block['content'] = t('TODO: Enter block content');
+        break;
+    }
+    return $block;
+  }
+}
+
+
+/**
+ * Implementation of hook_help().
+ */
+function enabled_modules_help($path) {
+  switch ($section) {
+    case 'admin/help#enabled_modules':
+      return t('Provides a page showing all enabled modules, including modules missing from the file system, and blocks showing recently enabled and recently disabled modules.');
+    case 'admin/modules#description':
+      return t('Show enabled, missing, and recently toggled modules.');
+    // OPTIONAL: Add additional cases for other paths that should display help text.
+  }
+}
+
+
+/**
+ * Implementation of hook_perm().
+ */
+function enabled_modules_perm() {
+  return array('view enabled modules');
+}
+
+
+/**
+ * Implementation of hook_menu().
+ */
+function enabled_modules_menu($may_cache) {
+  $items = array();
+
+  if ($may_cache) {
+    $items[] = array(
+      'path' => 'enabled_modules',
+      'title' => t('Enabled modules'),
+      'access' => user_access('view enabled modules'),
+      'callback' => 'enabled_modules_list',
+      'type' => MENU_NORMAL_ITEM,
+    );
+    // OPTIONAL: Fill in additional static menu items
+  }
+  // OPTIONAL: Put in else statement for dynamic menu items that can't be cached.
+
+  return $items;
+}
+
+
+/**
+ * Implementation of hook_watchdog().
+ */
+function enabled_modules_watchdog($log_msg) {
+
+}
+
+
+// Helper functions
+
+/**
+ * 
+ */
+function enabled_modules_list() {
+  $modules = enabled_modules_fetch_enabled();
+  return theme('enabled_modules_list', $modules);
+}
+
+/**
+ * List all enabled modules.
+ *
+ * @return
+ *   An array of system table objects of type module and status 1.
+ */
+function enabled_modules_fetch_enabled() {
+  static $modules = array();
+  if (!isset($modules) || empty($modules)) {
+  // @TODO maybe implement our own cache, flushed each time module page saved
+    $result = db_query("SELECT filename, name, description, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = '1' ORDER BY name");
+    while ($module = db_fetch_object($result)) {
+      if (file_exists($module->filename)) {
+        $module->exists = 'present';
+        $module->tasks = enabled_modules_module_admin_tasks($module->name);
+      }
+      else {
+        $module->exists = 'missing';
+        $module->tasks = '';
+      }
+      $modules[] = $module;
+    }
+  }
+  return $modules;
+}
+
+/**
+ *  adapted from http://api.drupal.org/api/function/system_admin_by_module/5
+ */
+function enabled_modules_module_admin_tasks($module) {
+  $admin_tasks = system_get_module_admin_tasks($module);
+
+  // Check for help links.
+  if (module_invoke($module, 'help', "admin/help#$module")) {
+    $admin_tasks[100] = l(t('Get help'), "admin/help/$module");
+  }
+
+  // Only display a section if there are any available tasks.
+  if (count($admin_tasks)) {
+    // Sort.
+    ksort($admin_tasks);
+    return $admin_tasks;
+  }
+  else {
+    return array();
+  }
+}
+
+
+function theme_enabled_modules_module_admin_tasks($admin_tasks = array()) {
+  // Output links
+  if (count($admin_tasks)) {
+    return theme('item_list', $admin_tasks);
+  }
+  else {
+    return theme('item_list', array(t('No tasks')));
+  }
+}
+
+
+function theme_enabled_modules_list($modules) {
+  $output = '';
+// @TODO - for table sorting to work, the table must be built directly with SQL
+// it will not sort data in an array.  We may need our own table anyway, so
+// we can track when modules are enabled and disabled, so could redo that way.
+  $header = array(
+    array(
+      'data' => t('Name'),
+      
+    ),
+    array(
+      'data' => t('Description'),
+    ),
+    array(
+      'data' => t('Installed'),
+    ),
+  );
+  if (user_access('administer site configuration')) {
+    $header[] = array('data' => t('Administer'));
+  }
+  
+  $rows = array();
+  foreach ($modules as $module) {
+    $row = array();
+    $row[] = array(
+      'class' => 'enabled-module-name',
+      'data' => $module->name,
+    );
+    $row[] = array(
+      'class' => 'enabled-module-description',
+      'data' => $module->description,
+    );
+    $row[] = array(
+      'class' => 'enabled-module-installed',
+      'data' => $module->exists,
+    );
+    if (user_access('administer site configuration')) {
+      $row[] = array(
+        'class' => 'enabled-module-administer',
+        'data' => theme('enabled_modules_module_admin_tasks', $module->tasks),
+      );
+    }
+    $rows[] = $row;
+  }
+
+  $output .= theme('table', $header, $rows, array('class' => 'enabled-modules-list'));
+  
+  return $output;
+}
