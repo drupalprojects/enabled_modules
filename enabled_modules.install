@@ -1,0 +1,28 @@
+<?php
+// $Id$
+
+/**
+ * Implementation of hook_install().
+ */
+function enabled_modules_install() {
+  drupal_set_message(t('"Enabled modules" module installed.  See lists of <a href="@list">presently enabled</a> and <a href="@disabled">formerly enabled</a> modules in your Logs section of Administration.  Set which roles can view enabled modules <a href="@permissions">in Access permissions</a>.', array('@list' => url('admin/logs/status'), '@disabled' => url('admin/build/modules'), '@permissions' => url('admin/user/access', NULL, 'module-enabled_modules'))));
+}
+
+/**
+ * Implementation of hook_uninstall().
+function update_status_uninstall() {
+  $variables = array(
+    'update_status_settings',
+    'update_status_notify_emails',
+    'update_status_check_frequency',
+    'update_status_notification_threshold',
+    'update_status_last',
+    'update_status_fetch_url',
+  );
+  foreach ($variables as $variable) {
+    variable_del($variable);
+  }
+  cache_clear_all();
+}
+ */
+
