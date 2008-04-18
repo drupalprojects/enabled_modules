@@ -236,7 +236,18 @@ function theme_enabled_modules_list($modules, $status = 1) {
     $rows[] = $row;
   }
 
-  $output .= theme('table', $header, $rows, array('class' => 'enabled-modules-list'));
+  if ($status == 1) {
+    // Enabled modules
+    $attributes = array('class' => 'enabled-modules-list');
+    $caption = t('Currently enabled modules');
+  }
+  else {
+    // Disabled module
+    $attributes = array('class' => 'disabled-modules-list');
+    $caption = t('Disabled formerly enabled modules');
+  }
+    
+  $output .= theme('table', $header, $rows, $attributes, $caption);
   
   return $output;
 }
