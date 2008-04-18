@@ -204,7 +204,7 @@ function theme_enabled_modules_list($modules, $status = 1) {
       'data' => t('Description'),
     ),
     array(
-      'data' => t('Installed'),
+      'data' => t('Code'),
     ),
   );
   if (user_access('administer site configuration') && $status == 1) {
