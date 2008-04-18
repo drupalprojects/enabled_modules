@@ -84,7 +84,7 @@ function enabled_modules_menu($may_cache) {
     $items[] = array(
       'path' => 'admin/logs/enabled_modules',
       'title' => t('Enabled modules'),
-      'description' => t('See all modules marked as enabled, even if their code is no longer present.'),
+      'description' => t('See all modules marked as enabled, even if their code is no longer present, and see where Drupal is looking for the module on the file system.'),
       'callback' => 'enabled_modules_list',
       'weight' => 10,
       'access' => user_access('view enabled modules'),
@@ -127,7 +127,7 @@ function enabled_modules_watchdog($log_msg) {
  */
 function enabled_modules_list($status = 1) {
   $modules = enabled_modules_fetch_enabled($status);
-  return theme('enabled_modules_list', $modules);
+  return theme('enabled_modules_list', $modules, $status);
 }
 
 /**
@@ -190,7 +190,7 @@ function theme_enabled_modules_module_admin_tasks($admin_tasks = array()) {
 }
 
 
-function theme_enabled_modules_list($modules) {
+function theme_enabled_modules_list($modules, $status = 1) {
   $output = '';
 // @TODO - for table sorting to work, the table must be built directly with SQL
 // it will not sort data in an array.  We may need our own table anyway, so
@@ -207,7 +207,7 @@ function theme_enabled_modules_list($modules) {
       'data' => t('Installed'),
     ),
   );
-  if (user_access('administer site configuration')) {
+  if (user_access('administer site configuration') && $status == 1) {
     $header[] = array('data' => t('Administer'));
   }
   
@@ -227,7 +227,7 @@ function theme_enabled_modules_list($modules) {
       'class' => 'enabled-module-installed',
       'data' => $module->exists,
     );
-    if (user_access('administer site configuration')) {
+    if (user_access('administer site configuration') && $status == 1) {
       $row[] = array(
         'class' => 'enabled-module-administer',
         'data' => theme('enabled_modules_module_admin_tasks', $module->tasks),
