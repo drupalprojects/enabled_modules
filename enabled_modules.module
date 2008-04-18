@@ -92,7 +92,7 @@ function enabled_modules_menu($may_cache) {
       'path' => 'admin/logs/enabled_modules/disabled',
       'title' => t('Formerly enabled'),
       'callback' => 'enabled_modules_list',
-      'callback arguments' => array(1),
+      'callback arguments' => array(0),
       'access' => user_access('view enabled modules'),
       'type' => MENU_LOCAL_TASK,
     );  
