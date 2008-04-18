@@ -62,6 +62,7 @@ function enabled_modules_help($section) {
         $help .= '
         <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/logs/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
       }
+      return $help;
   }
 }
 
