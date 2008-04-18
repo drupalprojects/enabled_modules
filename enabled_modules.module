@@ -48,7 +48,7 @@ function enabled_modules_help($section) {
       return t('Show enabled, missing, and recently toggled modules.');
     case 'admin/logs/enabled_modules':
     case 'admin/logs/enabled_modules/list':    
-      $help = '<p>'. t('All enabled modules are listed even if their codebase is no longer installed.  These modules are marked missing.  The system path to each module is available as a tooltip on placing the mouse cursor over the module name.') . realpath() .'</p>';
+      $help = '<p>'. t('All enabled modules are listed even if their codebase is no longer installed.  These modules are marked missing.  The system path to each module is available as a tooltip on placing the mouse cursor over the module name.') . $_SERVER['PHP_SELF'] .'</p>';
       if (module_exists('update_status')) {
         $help .= '
         <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/logs/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
