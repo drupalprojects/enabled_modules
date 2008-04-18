@@ -40,13 +40,20 @@ function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
 /**
  * Implementation of hook_help().
  */
-function enabled_modules_help($path) {
+function enabled_modules_help($section) {
   switch ($section) {
     case 'admin/help#enabled_modules':
       return t('Provides a page showing all enabled modules, including modules missing from the file system, and blocks showing recently enabled and recently disabled modules.');
     case 'admin/modules#description':
       return t('Show enabled, missing, and recently toggled modules.');
-    // OPTIONAL: Add additional cases for other paths that should display help text.
+    case 'admin/logs/enabled_modules':
+    case 'admin/logs/enabled_modules/list':    
+      $help = '<p>'. t('All enabled modules are listed even if their codebase is no longer installed.  These modules are marked missing.  The system path to each module is available as a tooltip on placing the mouse cursor over the module name.') .'</p>'
+      if (module_exists('update_status')) {
+        $help .= '
+        <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/logs/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
+      }
+      return $help;
   }
 }
 
@@ -67,12 +74,28 @@ function enabled_modules_menu($may_cache) {
 
   if ($may_cache) {
     $items[] = array(
-      'path' => 'enabled_modules',
+      'path' => 'admin/logs/enabled_modules',
       'title' => t('Enabled modules'),
-      'access' => user_access('view enabled modules'),
+      'description' => t('See all modules marked as enabled, even if their code is no longer present.'),
       'callback' => 'enabled_modules_list',
-      'type' => MENU_NORMAL_ITEM,
+      'weight' => 10,
+      'access' => user_access('view enabled modules'),
     );
+    $items[] = array(
+      'path' => 'admin/logs/enabled_modules/list',
+      'title' => t('Currently enabled'),
+      'callback' => 'enabled_modules_list',
+      'access' => user_access('view enabled modules'),
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+    );
+    $items[] = array(
+      'path' => 'admin/logs/enabled_modules/disabled',
+      'title' => t('Formerly enabled'),
+      'callback' => 'enabled_modules_list',
+      'callback arguments' => array(1),
+      'access' => user_access('view enabled modules'),
+      'type' => MENU_LOCAL_TASK,
+    );  
     // OPTIONAL: Fill in additional static menu items
   }
   // OPTIONAL: Put in else statement for dynamic menu items that can't be cached.
@@ -94,8 +117,8 @@ function enabled_modules_watchdog($log_msg) {
 /**
  * 
  */
-function enabled_modules_list() {
-  $modules = enabled_modules_fetch_enabled();
+function enabled_modules_list($status = 1) {
+  $modules = enabled_modules_fetch_enabled($status);
   return theme('enabled_modules_list', $modules);
 }
 
@@ -105,11 +128,11 @@ function enabled_modules_list() {
  * @return
  *   An array of system table objects of type module and status 1.
  */
-function enabled_modules_fetch_enabled() {
+function enabled_modules_fetch_enabled($status = 1) {
   static $modules = array();
   if (!isset($modules) || empty($modules)) {
   // @TODO maybe implement our own cache, flushed each time module page saved
-    $result = db_query("SELECT filename, name, description, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = '1' ORDER BY name");
+    $result = db_query("SELECT filename, name, description, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = %d ORDER BY name", $status);
     while ($module = db_fetch_object($result)) {
       if (file_exists($module->filename)) {
         $module->exists = 'present';
@@ -186,6 +209,7 @@ function theme_enabled_modules_list($modules) {
     $row[] = array(
       'class' => 'enabled-module-name',
       'data' => $module->name,
+      'title' => $module->filename,
     );
     $row[] = array(
       'class' => 'enabled-module-description',
