@@ -42,8 +42,8 @@ function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
 /**
  * Implementation of hook_help().
  */
-function enabled_modules_help($section) {
-  switch ($section) {
+function enabled_modules_help($path, $arg) {
+  switch ($path) {
     case 'admin/help#enabled_modules':
       return t('Provides a page showing all enabled modules, including modules missing from the file system, and blocks showing recently enabled and recently disabled modules.');
     case 'admin/modules#description':
@@ -78,37 +78,29 @@ function enabled_modules_perm() {
 /**
  * Implementation of hook_menu().
  */
-function enabled_modules_menu($may_cache) {
+function enabled_modules_menu() {
   $items = array();
 
-  if ($may_cache) {
-    $items[] = array(
-      'path' => 'admin/logs/enabled_modules',
-      'title' => t('Enabled modules'),
-      'description' => t('See all modules marked as enabled, even if their code is no longer present, and see where Drupal is looking for the module on the file system.'),
-      'callback' => 'enabled_modules_list',
-      'weight' => 10,
-      'access' => user_access('view enabled modules'),
-    );
-    $items[] = array(
-      'path' => 'admin/logs/enabled_modules/list',
-      'title' => t('Currently enabled'),
-      'callback' => 'enabled_modules_list',
-      'access' => user_access('view enabled modules'),
-      'type' => MENU_DEFAULT_LOCAL_TASK,
-    );
-    $items[] = array(
-      'path' => 'admin/logs/enabled_modules/disabled',
-      'title' => t('Formerly enabled'),
-      'callback' => 'enabled_modules_list',
-      'callback arguments' => array(0),
-      'access' => user_access('view enabled modules'),
-      'type' => MENU_LOCAL_TASK,
-    );  
-    // OPTIONAL: Fill in additional static menu items
-  }
-  // OPTIONAL: Put in else statement for dynamic menu items that can't be cached.
-
+  $items[admin/logs/enabled_modules] = array(
+    'title' => t('Enabled modules'),
+    'description' => t('See all modules marked as enabled, even if their code is no longer present, and see where Drupal is looking for the module on the file system.'),
+    'page callback' => 'enabled_modules_list',
+    'weight' => 10,
+    'access arguments' => array('view enabled modules'),
+  );
+  $items[admin/logs/enabled_modules/list] = array(
+    'title' => t('Currently enabled'),
+    'page_callback' => 'enabled_modules_list',
+    'access arguments' => array('view enabled modules'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items[admin/logs/enabled_modules/disabled] = array(
+    'title' => t('Formerly enabled'),
+    'page callback' => 'enabled_modules_list',
+    'page arguments' => array(0),
+    'access arguments' => array('view enabled modules'),
+    'type' => MENU_LOCAL_TASK,
+  );  
   return $items;
 }
 
