@@ -81,20 +81,20 @@ function enabled_modules_perm() {
 function enabled_modules_menu() {
   $items = array();
 
-  $items[admin/logs/enabled_modules] = array(
+  $items['admin/logs/enabled_modules'] = array(
     'title' => t('Enabled modules'),
     'description' => t('See all modules marked as enabled, even if their code is no longer present, and see where Drupal is looking for the module on the file system.'),
     'page callback' => 'enabled_modules_list',
     'weight' => 10,
     'access arguments' => array('view enabled modules'),
   );
-  $items[admin/logs/enabled_modules/list] = array(
+  $items['admin/logs/enabled_modules/list'] = array(
     'title' => t('Currently enabled'),
     'page_callback' => 'enabled_modules_list',
     'access arguments' => array('view enabled modules'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
-  $items[admin/logs/enabled_modules/disabled] = array(
+  $items['admin/logs/enabled_modules/disabled'] = array(
     'title' => t('Formerly enabled'),
     'page callback' => 'enabled_modules_list',
     'page arguments' => array(0),
@@ -129,12 +129,13 @@ function enabled_modules_list($status = 1) {
  * @return
  *   An array of system table objects of type module and status 1.
  */
-function enabled_modules_fetch_enabled($status = 1) {
+feunction enabled_modules_fetch_enabled($status = 1) {
   static $modules = array();
   if (!isset($modules) || empty($modules)) {
   // @TODO maybe implement our own cache, flushed each time module page saved
-    $result = db_query("SELECT filename, name, description, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = %d ORDER BY name", $status);
+    $result = db_query("SELECT filename, name, info, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = %d ORDER BY name", $status);
     while ($module = db_fetch_object($result)) {
+      $module->info = unserialize($module->info);
       if (file_exists($module->filename)) {
         $module->exists = 'present';
         $module->tasks = enabled_modules_module_admin_tasks($module->name);
@@ -214,7 +215,7 @@ function theme_enabled_modules_list($modules, $status = 1) {
     );
     $row[] = array(
       'class' => 'enabled-module-description',
-      'data' => $module->description,
+      'data' => $module->info['description'],
     );
     $row[] = array(
       'class' => 'enabled-module-installed',

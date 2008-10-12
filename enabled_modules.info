@@ -1,6 +1,6 @@
 ; $Id$
 name = Enabled modules
 description = Show enabled, missing, and recently toggled modules.
-dependencies[] = watchdog
+; dependencies[] = watchdog
 package = Development
 core = 6.x
