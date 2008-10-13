@@ -48,19 +48,19 @@ function enabled_modules_help($path, $arg) {
       return t('Provides a page showing all enabled modules, including modules missing from the file system, and blocks showing recently enabled and recently disabled modules.');
     case 'admin/modules#description':
       return t('Show enabled, missing, and recently toggled modules.');
-    case 'admin/logs/enabled_modules':
-    case 'admin/logs/enabled_modules/list':    
+    case 'admin/reports/enabled_modules':
+    case 'admin/reports/enabled_modules/list':    
       $help = '<p>'. t('<strong>All enabled modules</strong> are listed here. if a module\'s codebase is not found, the module is marked missing.  The system\'s stored path to each module is available as a tooltip on placing the mouse cursor over the module name.  Your overall Drupal site is presently installed in this directory:') .' <code>'. getcwd() .'</code></p>';
       if (module_exists('update_status')) {
         $help .= '
-        <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/logs/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
+        <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/reports/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
       }
       return $help;
-    case 'admin/logs/enabled_modules/disabled':    
+    case 'admin/reports/enabled_modules/disabled':    
       $help = '<p>'. t('<strong>Formerly enabled and now disabled modules</strong> are listed here.  If a codebase is no longer found the modules is marked missing.  Modules which have been properly uninstalled are not listed.  The system\'s stored path to each module is available as a tooltip on placing the mouse cursor over the module name.  Your overall Drupal site is presently installed in this directory:') .' <code>'. getcwd() .'</code></p>';
       if (module_exists('update_status')) {
         $help .= '
-        <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/logs/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
+        <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/reports/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
       }
       return $help;
   }
@@ -81,20 +81,20 @@ function enabled_modules_perm() {
 function enabled_modules_menu() {
   $items = array();
 
-  $items['admin/logs/enabled_modules'] = array(
+  $items['admin/reports/enabled_modules'] = array(
     'title' => t('Enabled modules'),
     'description' => t('See all modules marked as enabled, even if their code is no longer present, and see where Drupal is looking for the module on the file system.'),
     'page callback' => 'enabled_modules_list',
     'weight' => 10,
     'access arguments' => array('view enabled modules'),
   );
-  $items['admin/logs/enabled_modules/list'] = array(
+  $items['admin/reports/enabled_modules/list'] = array(
     'title' => t('Currently enabled'),
     'page_callback' => 'enabled_modules_list',
     'access arguments' => array('view enabled modules'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
-  $items['admin/logs/enabled_modules/disabled'] = array(
+  $items['admin/reports/enabled_modules/disabled'] = array(
     'title' => t('Formerly enabled'),
     'page callback' => 'enabled_modules_list',
     'page arguments' => array(0),
@@ -104,6 +104,20 @@ function enabled_modules_menu() {
   return $items;
 }
 
+
+/**
+ * Implementation of hook_theme().
+ */
+function enabled_modules_theme() {
+  return array(
+    'enabled_modules_list' => array(
+      'arguments' => array('modules' => NULL),
+    ),
+    'enabled_modules_module_admin_tasks' => array(
+      'arguments' => array('arg' => NULL),
+    ),
+  );
+}
 
 /**
  * Implementation of hook_watchdog().
@@ -120,7 +134,8 @@ function enabled_modules_watchdog($log_msg) {
  */
 function enabled_modules_list($status = 1) {
   $modules = enabled_modules_fetch_enabled($status);
-  return theme('enabled_modules_list', $modules, $status);
+  $output .= theme('enabled_modules_list', $modules, $status);
+  return $output;
 }
 
 /**
@@ -129,10 +144,9 @@ function enabled_modules_list($status = 1) {
  * @return
  *   An array of system table objects of type module and status 1.
  */
-feunction enabled_modules_fetch_enabled($status = 1) {
+function enabled_modules_fetch_enabled($status = 1, $reset = TRUE) {
   static $modules = array();
-  if (!isset($modules) || empty($modules)) {
-  // @TODO maybe implement our own cache, flushed each time module page saved
+  if ($reset || !isset($modules) || empty($modules)) {
     $result = db_query("SELECT filename, name, info, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = %d ORDER BY name", $status);
     while ($module = db_fetch_object($result)) {
       $module->info = unserialize($module->info);
@@ -157,7 +171,7 @@ function enabled_modules_module_admin_tasks($module) {
   $admin_tasks = system_get_module_admin_tasks($module);
 
   // Check for help links.
-  if (module_invoke($module, 'help', "admin/help#$module")) {
+  if (module_invoke($module, 'help', "admin/help#$module", array())) {
     $admin_tasks[100] = l(t('Get help'), "admin/help/$module");
   }
 
