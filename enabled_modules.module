@@ -361,8 +361,32 @@ function enabled_modules_array_link($array) {
   return $output;
  }
 
+/**
+ * @function
+ * Implements hook_views_api
+ */
 function enabled_modules_views_api() {
   return array(
     'api' => 2,
   );
 }
+/**
+ * @function
+ * Implements hook_system_info_alter
+ */
+function enabled_modules_system_info_alter($info, $file) {
+  // This if() loop prevents a huge number of error messages from occurring before table has been created.
+  if (db_table_exists('enabled_modules_system')) {
+    // This hook is called each time a line of the {system} table is rebuilt.
+    // Delete that row
+    db_query("DELETE FROM {enabled_modules_system} WHERE filename='%s'", $file->filename);
+    // Rebuild
+    db_query("INSERT INTO {enabled_modules_system}
+      (filename, name, description, package, version, core, project, datestamp, dependencies, dependents, php)
+      VALUES
+      ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s')",
+      $file->filename, $info['name'], $info['description'], $info['package'], $info['version'], $info['core'], $info['project'], $info['datestamp'], serialize($info['dependencies']), serialize($info['dependents']), $info['php']
+    ); 
+  }
+}
+
