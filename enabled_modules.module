@@ -360,3 +360,9 @@ function enabled_modules_array_link($array) {
   }
   return $output;
  }
+
+function enabled_modules_views_api() {
+  return array(
+    'api' => 2,
+  );
+}
