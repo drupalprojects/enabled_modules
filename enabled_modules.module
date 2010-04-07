@@ -6,17 +6,13 @@
  * Provides a page showing all enabled modules by system name, including modules missing from the file system, and a page showing formerly enabled now disabled modules.  Also provides the operating system directory of the Drupal installation and the paths of enabled modules.
  */
 
-
 // move to separate module
 /**
  * Implementation of hook_block().
  */
 function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
-    $blocks['recently_enabled']['info'] = t('Recently enabled modules with administration links.');
-    $blocks['recently_disabled']['info'] = t('Recently disabled modules.');
     $blocks['demo']['info'] = t('Key site modules');
-
     return $blocks;
   }
   else if ($op == 'configure') {
@@ -46,14 +42,6 @@ function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
   }
   else if ($op == 'view') {
     switch ($delta) {
-      case 'recently_enabled':
-        $block['subject'] = t('Recently enabled modules');
-        $block['content'] = t('TODO: Enter block content');
-        break;
-      case 'recently_disabled':
-        $block['subject'] = t('Recently disabled modules');
-        $block['content'] = t('TODO: Enter block content');
-        break;
       case 'demo':
         $block['subject'] = t('Key Site Modules');
         $block['content'] = enabled_modules_block_list($status = 1);
@@ -98,7 +86,6 @@ function enabled_modules_perm() {
   return array('view enabled modules');
 }
 
-
 /**
  * Implementation of hook_menu().
  */
@@ -128,7 +115,6 @@ function enabled_modules_menu() {
   return $items;
 }
 
-
 /**
  * Implementation of hook_theme().
  */
@@ -146,28 +132,15 @@ function enabled_modules_theme() {
   );
 }
 
-/**
- * Implementation of hook_watchdog().
- */
-function enabled_modules_watchdog($log_msg) {
-
-}
-
 
 // Helper functions
 
-/**
- *
- */
 function enabled_modules_list($status = 1) {
   $modules = enabled_modules_fetch_enabled($status);
   $output .= theme('enabled_modules_list', $modules, $status);
   return $output;
 }
 
-/**
- *
- */
 function enabled_modules_block_list($status = 1) {
   $module_list = variable_get('enabled_modules_demo_list', 0);
   $modules = enabled_modules_fetch_demo($status);
@@ -216,7 +189,6 @@ function enabled_modules_fetch_demo($status = 1, $reset = TRUE) {
   return $modules;
 }
 
-
 function enabled_modules_fetch_names($status = 1, $reset = TRUE) {
   $module_names = array();
   if ($reset || !isset($modules) || empty($modules)) {
@@ -250,7 +222,6 @@ function enabled_modules_module_admin_tasks($module) {
   }
 }
 
-
 function theme_enabled_modules_module_admin_tasks($admin_tasks = array()) {
   // Output links
   if (count($admin_tasks)) {
@@ -260,7 +231,6 @@ function theme_enabled_modules_module_admin_tasks($admin_tasks = array()) {
     return theme('item_list', array(t('No tasks')));
   }
 }
-
 
 function theme_enabled_modules_list($modules, $status = 1) {
   $output = '';
