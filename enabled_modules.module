@@ -105,13 +105,6 @@ function enabled_modules_menu() {
     'access arguments' => array('access site reports'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
-  $items['admin/reports/enabled_modules/disabled'] = array(
-    'title' => t('Formerly enabled'),
-    'page callback' => 'enabled_modules_list',
-    'page arguments' => array(0),
-    'access arguments' => array('access site reports'),
-    'type' => MENU_LOCAL_TASK,
-  );
   return $items;
 }
 

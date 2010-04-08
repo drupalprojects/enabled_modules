@@ -276,7 +276,32 @@ function enabled_modules_views_data() {
           'handler' => 'views_handler_sort',
         ),
       ),
+      'code' => array(
+        'title' => t('Code'),
+        'help' => t('Whether or not the code is present or not.'),
+        'real field' => 'filename',
+        'field' => array(
+          'handler' => 'enabled_modules_handler_field_code',
+        ),
+      ),
     ), //end table
+  );
+}
+
+/**
+ * @function
+ * Implementation of hook_views_handlers
+ */
+function enabled_modules_views_handlers() {
+  return array(
+    'info' => array(
+      'path' => drupal_get_path('module', 'enabled_modules'),
+    ),
+    'handlers' => array(
+      'enabled_modules_handler_field_code' => array(
+        'parent' => 'views_handler_field',
+      ),
+    ),
   );
 }
 

@@ -205,3 +205,15 @@ function enabled_modules_update_6101() {
   return $ret;
 }
 
+/**
+ * @function
+ * Ensures that the views module is present.
+ */
+function enabled_modules_update_6102() {
+  $ret = array();
+  if (!module_exists('views')) {
+    $ret['#abort'] = array('success' => FALSE, 'query' => 'The enabled_modules module now requires the views module. Please enable the views module.');
+  }
+  return $ret;
+}
+
