@@ -240,7 +240,6 @@ function theme_enabled_modules_list($modules, $status = 1) {
   $header = array(
     array(
       'data' => t('Name'),
-
     ),
     array(
       'data' => t('Description'),
@@ -340,7 +339,8 @@ function enabled_modules_views_api() {
     'api' => 2,
   );
 }
-/**
+
+/**
  * @function
  * Implements hook_system_info_alter
  */
