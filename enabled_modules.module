@@ -97,19 +97,19 @@ function enabled_modules_menu() {
     'description' => t('See all modules marked as enabled, even if their code is no longer present, and see where Drupal is looking for the module on the file system.'),
     'page callback' => 'enabled_modules_list',
     'weight' => 10,
-    'access arguments' => array('view enabled modules'),
+    'access arguments' => array('access site reports'),
   );
   $items['admin/reports/enabled_modules/list'] = array(
     'title' => t('Currently enabled'),
     'page_callback' => 'enabled_modules_list',
-    'access arguments' => array('view enabled modules'),
+    'access arguments' => array('access site reports'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
   $items['admin/reports/enabled_modules/disabled'] = array(
     'title' => t('Formerly enabled'),
     'page callback' => 'enabled_modules_list',
     'page arguments' => array(0),
-    'access arguments' => array('view enabled modules'),
+    'access arguments' => array('access site reports'),
     'type' => MENU_LOCAL_TASK,
   );
   return $items;
