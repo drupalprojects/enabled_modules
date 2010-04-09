@@ -58,24 +58,21 @@ function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
 function enabled_modules_help($path, $arg) {
   switch ($path) {
     case 'admin/help#enabled_modules':
-      return t('Provides a page showing all enabled modules, including modules missing from the file system, and blocks showing recently enabled and recently disabled modules.');
-    case 'admin/modules#description':
-      return t('Show enabled, missing, and recently toggled modules.');
+      $help  = '<p>'. t('The <em>enabled modules</em> module provides various listings of the modules present within a Drupal installation as follows:') .'</p>';
+      $help .= '<ul><li>'. t('A <a href="@page">page suitable for demonstration sites</a> showing the names of enabled modules by project.', array('@page' => url('enabled_modules'))) .'</li>';
+      $help .= '<li>'. t('A <a href="@page">page for site administrators</a> showing enabled modules with links to administrative functions.', array('@page' => url('admin/reports/enabled_modules'))) .'</li>';
+      $help .= '<li>'. t('A <a href="@page">page for site administrators</a> showing disabled modules.', array('@page' => url('admin/reports/enabled_modules/disabled'))) .'</li>';
+      $help .= '<li>'. t('A <a href="@page">page for site administrators</a> showing not installed modules present in the system.', array('@page' => url('admin/reports/enabled_modules/not-installed'))) .'</li>';
+      $help .= '<li>'. t('A block configurable to show key modules used on the site.') .'</li></ul>';
+      return $help;
     case 'admin/reports/enabled_modules':
     case 'admin/reports/enabled_modules/list':
-      $help = '<p>'. t('<strong>All enabled modules</strong> are listed here. if a module\'s codebase is not found, the module is marked missing.  The system\'s stored path to each module is available as a tooltip on placing the mouse cursor over the module name.  Your overall Drupal site is presently installed in this directory:') .' <code>'. getcwd() .'</code></p>';
-      if (module_exists('update_status')) {
-        $help .= '
-  <p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/reports/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
-      }
-      return $help;
     case 'admin/reports/enabled_modules/disabled':
-      $help = '<p>'. t('<strong>Formerly enabled and now disabled modules</strong> are listed here.  If a codebase is no longer found the modules is marked missing.  Modules which have been properly uninstalled are not listed.  The system\'s stored path to each module is available as a tooltip on placing the mouse cursor over the module name.  Your overall Drupal site is presently installed in this directory:') .' <code>'. getcwd() .'</code></p>';
-      if (module_exists('update_status')) {
-        $help .= '
-<p>'. t('For more information about enabled, installed modules and available modules see the <a href="@status_report">Status report</a> and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/reports/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
+    case 'admin/reports/enabled_modules/not-installed':
+      if (module_exists('update')) {
+        return '<p>'. t('For more information about enabled and/or available modules, see the <a href="@status_report">Status Report</a> page and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/reports/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
       }
-      return $help;
+      break;
     }
   }
 
