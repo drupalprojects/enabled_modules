@@ -70,14 +70,14 @@ function enabled_modules_schema() {
           'type' => 'varchar',
           'size' => 'normal',
           'default' => '',
-          'length' => '256',
+          'length' => '512',
         ),
         'dependents' => array(
           'description' => 'Dependents of the module',
           'type' => 'varchar',
           'size' => 'normal',
           'default' => '',
-          'length' => '256',
+          'length' => '512',
         ),
         'php' => array(
           'description' => 'The required PHP version for the module',
