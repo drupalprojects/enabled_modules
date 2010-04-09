@@ -3,53 +3,78 @@
 
 /**
  * @file
- * TODO: Enter file description here.
+ * Provides a page showing all enabled modules by system name, including modules missing from the file system, and a page showing formerly enabled now disabled modules.  Also provides the operating system directory of the Drupal installation and the paths of enabled modules.
  */
 
+// move to separate module
 /**
  * Implementation of hook_block().
  */
 function enabled_modules_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
-    $blocks['recently_enabled']['info'] = t('Recently enabled modules with administration links.');
-    $blocks['recently_disabled']['info'] = t('Recently disabled modules.');
+    $blocks['demo']['info'] = t('Key site modules');
     return $blocks;
   }
   else if ($op == 'configure') {
-    // OPTIONAL: Enter form elements to add to block configuration screen, if required.    
+    switch ($delta) {
+      case 'demo':
+        $form = array();
+        // All we need to provide is a text field, Drupal will take care of
+        // the other block configuration options and the save button.
+        $form['enabled_modules_demo_list'] = array(
+          '#type' => 'checkboxes',
+          '#title' => t('Select modules to list in the block'),
+          '#options' => enabled_modules_fetch_names($status = 1, $reset = TRUE),
+          '#description' => t('Selected modules will be listed in the block.'),
+          '#default_value' => variable_get('enabled_modules_demo_list', ''),
+        );
+        return $form;
+
+        break;
+    }
   }
   else if ($op == 'save') {
-    // OPTIONAL: Add code to trigger when block configuration is saved, if required.
+    switch ($delta) {
+      case 'demo':
+        variable_set('enabled_modules_demo_list', $edit['enabled_modules_demo_list']);
+        break;
+    }
   }
   else if ($op == 'view') {
     switch ($delta) {
-      case 'recently_enabled':
-        $block['subject'] = t('Recently enabled modules');
-        $block['content'] = t('TODO: Enter block content');
-        break;
-      case 'recently_disabled':
-        $block['subject'] = t('Recently disabled modules');
-        $block['content'] = t('TODO: Enter block content');
+      case 'demo':
+        $block['subject'] = t('Key Site Modules');
+        $block['content'] = enabled_modules_block_list($status = 1);
+        drupal_add_js('misc/collapse.js');
         break;
     }
     return $block;
   }
 }
 
-
 /**
  * Implementation of hook_help().
  */
-function enabled_modules_help($path) {
-  switch ($section) {
+function enabled_modules_help($path, $arg) {
+  switch ($path) {
     case 'admin/help#enabled_modules':
-      return t('Provides a page showing all enabled modules, including modules missing from the file system, and blocks showing recently enabled and recently disabled modules.');
-    case 'admin/modules#description':
-      return t('Show enabled, missing, and recently toggled modules.');
-    // OPTIONAL: Add additional cases for other paths that should display help text.
+      $help  = '<p>'. t('The <em>enabled modules</em> module provides various listings of the modules present within a Drupal installation as follows:') .'</p>';
+      $help .= '<ul><li>'. t('A <a href="@page">page suitable for demonstration sites</a> showing the names of enabled modules by project.', array('@page' => url('enabled_modules'))) .'</li>';
+      $help .= '<li>'. t('A <a href="@page">page for site administrators</a> showing enabled modules with links to administrative functions.', array('@page' => url('admin/reports/enabled_modules'))) .'</li>';
+      $help .= '<li>'. t('A <a href="@page">page for site administrators</a> showing disabled modules.', array('@page' => url('admin/reports/enabled_modules/disabled'))) .'</li>';
+      $help .= '<li>'. t('A <a href="@page">page for site administrators</a> showing not installed modules present in the system.', array('@page' => url('admin/reports/enabled_modules/not-installed'))) .'</li>';
+      $help .= '<li>'. t('A block configurable to show key modules used on the site.') .'</li></ul>';
+      return $help;
+    case 'admin/reports/enabled_modules':
+    case 'admin/reports/enabled_modules/list':
+    case 'admin/reports/enabled_modules/disabled':
+    case 'admin/reports/enabled_modules/not-installed':
+      if (module_exists('update')) {
+        return '<p>'. t('For more information about enabled and/or available modules, see the <a href="@status_report">Status Report</a> page and the <a href="@modules_page">Modules</a> page.', array('@status_report' => url('admin/reports/status'), '@modules_page' => url('admin/build/modules'))) .'</p>';
+      }
+      break;
+    }
   }
-}
-
 
 /**
  * Implementation of hook_perm().
@@ -58,153 +83,111 @@ function enabled_modules_perm() {
   return array('view enabled modules');
 }
 
-
 /**
- * Implementation of hook_menu().
+ * Implementation of hook_theme().
  */
-function enabled_modules_menu($may_cache) {
-  $items = array();
-
-  if ($may_cache) {
-    $items[] = array(
-      'path' => 'enabled_modules',
-      'title' => t('Enabled modules'),
-      'access' => user_access('view enabled modules'),
-      'callback' => 'enabled_modules_list',
-      'type' => MENU_NORMAL_ITEM,
-    );
-    // OPTIONAL: Fill in additional static menu items
-  }
-  // OPTIONAL: Put in else statement for dynamic menu items that can't be cached.
-
-  return $items;
+function enabled_modules_theme() {
+  return array(
+    'enabled_modules_block_list' => array(
+      'arguments' => array('modules' => NULL),
+    ),
+  );
 }
-
-
-/**
- * Implementation of hook_watchdog().
- */
-function enabled_modules_watchdog($log_msg) {
-
-}
-
 
 // Helper functions
-
-/**
- * 
- */
-function enabled_modules_list() {
-  $modules = enabled_modules_fetch_enabled();
-  return theme('enabled_modules_list', $modules);
+function enabled_modules_block_list($status = 1) {
+  $modules = enabled_modules_fetch_demo($status);
+  $output .= theme('enabled_modules_block_list', $modules, $status);
+  return $output;
 }
 
-/**
- * List all enabled modules.
- *
- * @return
- *   An array of system table objects of type module and status 1.
- */
-function enabled_modules_fetch_enabled() {
+function enabled_modules_fetch_demo($status = 1, $reset = TRUE) {
   static $modules = array();
-  if (!isset($modules) || empty($modules)) {
-  // @TODO maybe implement our own cache, flushed each time module page saved
-    $result = db_query("SELECT filename, name, description, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = '1' ORDER BY name");
+  if ($reset || !isset($modules) || empty($modules)) {
+    $module_list = array_values(variable_get('enabled_modules_demo_list', 0));
+    $result = db_query("SELECT filename, name, info, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = %d ORDER BY name", $status);
     while ($module = db_fetch_object($result)) {
-      if (file_exists($module->filename)) {
-        $module->exists = 'present';
-        $module->tasks = enabled_modules_module_admin_tasks($module->name);
+      if (in_array($module->name, $module_list, TRUE)) {
+        $module->info = unserialize($module->info);
+        $modules[] = $module;
       }
-      else {
-        $module->exists = 'missing';
-        $module->tasks = '';
-      }
-      $modules[] = $module;
     }
   }
   return $modules;
 }
 
-/**
- *  adapted from http://api.drupal.org/api/function/system_admin_by_module/5
- */
-function enabled_modules_module_admin_tasks($module) {
-  $admin_tasks = system_get_module_admin_tasks($module);
-
-  // Check for help links.
-  if (module_invoke($module, 'help', "admin/help#$module")) {
-    $admin_tasks[100] = l(t('Get help'), "admin/help/$module");
-  }
-
-  // Only display a section if there are any available tasks.
-  if (count($admin_tasks)) {
-    // Sort.
-    ksort($admin_tasks);
-    return $admin_tasks;
-  }
-  else {
-    return array();
-  }
-}
-
-
-function theme_enabled_modules_module_admin_tasks($admin_tasks = array()) {
-  // Output links
-  if (count($admin_tasks)) {
-    return theme('item_list', $admin_tasks);
-  }
-  else {
-    return theme('item_list', array(t('No tasks')));
-  }
-}
-
-
-function theme_enabled_modules_list($modules) {
-  $output = '';
-// @TODO - for table sorting to work, the table must be built directly with SQL
-// it will not sort data in an array.  We may need our own table anyway, so
-// we can track when modules are enabled and disabled, so could redo that way.
-  $header = array(
-    array(
-      'data' => t('Name'),
-      
-    ),
-    array(
-      'data' => t('Description'),
-    ),
-    array(
-      'data' => t('Installed'),
-    ),
-  );
-  if (user_access('administer site configuration')) {
-    $header[] = array('data' => t('Administer'));
-  }
-  
-  $rows = array();
-  foreach ($modules as $module) {
-    $row = array();
-    $row[] = array(
-      'class' => 'enabled-module-name',
-      'data' => $module->name,
-    );
-    $row[] = array(
-      'class' => 'enabled-module-description',
-      'data' => $module->description,
-    );
-    $row[] = array(
-      'class' => 'enabled-module-installed',
-      'data' => $module->exists,
-    );
-    if (user_access('administer site configuration')) {
-      $row[] = array(
-        'class' => 'enabled-module-administer',
-        'data' => theme('enabled_modules_module_admin_tasks', $module->tasks),
-      );
+function enabled_modules_fetch_names($status = 1, $reset = TRUE) {
+  $module_names = array();
+  if ($reset || !isset($modules) || empty($modules)) {
+    $result = db_query("SELECT filename, name, info, throttle, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = %d ORDER BY name", $status);
+    while ($module = db_fetch_object($result)) {
+      $module_names[$module->name] = $module->name;
     }
-    $rows[] = $row;
   }
+  return $module_names;
+}
 
-  $output .= theme('table', $header, $rows, array('class' => 'enabled-modules-list'));
-  
+function theme_enabled_modules_block_list($modules, $status = 1) {
+  $output = '';
+
+  foreach ($modules as $module) {
+    $output .= '<fieldset class="collapsible collapsed"><legend>' .$module->name .'</legend>';
+    $output .= '<div>Version: '. $module->info['version'] .'</div>';
+    $output .= '<div>'. $module->info['description'] .'</div>';
+
+    $output .= l(t('Project page'), 'http://drupal.org/project/'. $module->name, $options = array('html'=>true));
+    $output .='<ul><li>';
+    if (isset($module->info['dependencies'][0])){
+      $output .=t('Depends on:') .'<br>';
+      $output .= enabled_modules_array_link($module->info['dependencies']);
+      $output .='</li></ul>';
+    }
+    if (isset($module->info['dependents'][0])){
+      $output .='<ul><li>';
+      $output .=t('Required by:') .'<br>';
+      $output .= enabled_modules_array_link($module->info['dependents']);
+      $output .='</li></ul>';
+    }
+    $output .= '</fieldset>';
+  }
   return $output;
 }
+
+function enabled_modules_array_link($array) {
+  foreach($array as $key => $link){
+    $output .= l($link, 'http://drupal.org/project/'. $link, $options = array('html => TRUE'));
+    $output .= '<br />';
+  }
+  return $output;
+ }
+
+/**
+ * @function
+ * Implements hook_views_api
+ */
+function enabled_modules_views_api() {
+  return array(
+    'api' => 2,
+  );
+}
+
+/**
+ * @function
+ * Implements hook_system_info_alter
+ */
+function enabled_modules_system_info_alter($info, $file) {
+  // This if() loop prevents a huge number of error messages from occurring before table has been created.
+  if (db_table_exists('enabled_modules_system')) {
+    // This hook is called each time a line of the {system} table is rebuilt.
+    // Delete that row
+    db_query("DELETE FROM {enabled_modules_system} WHERE filename='%s'", $file->filename);
+    // Rebuild
+    db_query("INSERT INTO {enabled_modules_system}
+      (filename, name, description, package, version, core, project, datestamp, dependencies, dependents, php)
+      VALUES
+      ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s')",
+      $file->filename, $info['name'], $info['description'], $info['package'], $info['version'], $info['core'], $info['project'], $info['datestamp'], serialize($info['dependencies']), serialize($info['dependents']), $info['php']
+    ); 
+  }
+}
+
