@@ -96,7 +96,6 @@ function enabled_modules_theme() {
 
 // Helper functions
 function enabled_modules_block_list($status = 1) {
-  $module_list = variable_get('enabled_modules_demo_list', 0);
   $modules = enabled_modules_fetch_demo($status);
   $output .= theme('enabled_modules_block_list', $modules, $status);
   return $output;
