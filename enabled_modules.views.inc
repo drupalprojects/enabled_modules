@@ -276,12 +276,21 @@ function enabled_modules_views_data() {
           'handler' => 'views_handler_sort',
         ),
       ),
+      // PSEUDO FIELDS
       'code' => array(
         'title' => t('Code'),
         'help' => t('Whether or not the code is present or not.'),
         'real field' => 'filename',
         'field' => array(
           'handler' => 'enabled_modules_handler_field_code',
+        ),
+      ),
+      'administer' => array(
+        'title' => t('Administer'),
+        'help' => t('Administration links for the module.'),
+        'real field' => 'filename',
+        'field' => array(
+          'handler' => 'enabled_modules_handler_field_administer',
         ),
       ),
     ), //end table
@@ -299,6 +308,9 @@ function enabled_modules_views_handlers() {
     ),
     'handlers' => array(
       'enabled_modules_handler_field_code' => array(
+        'parent' => 'views_handler_field',
+      ),
+      'enabled_modules_handler_field_administer' => array(
         'parent' => 'views_handler_field',
       ),
     ),
