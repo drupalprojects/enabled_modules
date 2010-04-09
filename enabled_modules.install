@@ -217,3 +217,29 @@ function enabled_modules_update_6102() {
   return $ret;
 }
 
+/**
+ * @function
+ * Increases the size of the dependents and dependencies fields
+ */
+function enabled_modules_update_6103() {
+  $ret = array();
+  
+  db_change_field($ret, 'enabled_modules_system', 'dependencies', 'dependencies', array(
+    'description' => 'Dependencies of the module',
+    'type' => 'varchar',
+    'size' => 'normal',
+    'default' => '',
+    'length' => '512',
+  ));
+  
+  db_change_field($ret, 'enabled_modules_system', 'dependents', 'dependents', array(
+    'description' => 'Dependents of the module',
+    'type' => 'varchar',
+    'size' => 'normal',
+    'default' => '',
+    'length' => '512',
+  ));
+  
+  return $ret;
+}
+
