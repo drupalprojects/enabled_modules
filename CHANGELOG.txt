@@ -1,0 +1,6 @@
+CHANGELOG
+
+7.x-1.x-dev:
+No changes since 7.x-1.x-alpha1
+
+Changelog starts at 7.x-1.x-alpha1
