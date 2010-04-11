@@ -135,7 +135,7 @@ function theme_enabled_modules_block_list($modules, $status = 1) {
     $output .= '<div>Version: '. $module->info['version'] .'</div>';
     $output .= '<div>'. $module->info['description'] .'</div>';
 
-    $output .= l(t('Project page'), 'http://drupal.org/project/'. $module->name, $options = array('html'=>true));
+    $output .= l(t('Project page'), 'http://drupal.org/project/'. $module->info['project'], $options = array('html'=>true));
     $output .='<ul><li>';
     if (isset($module->info['dependencies'][0])){
       $output .=t('Depends on:') .'<br>';
