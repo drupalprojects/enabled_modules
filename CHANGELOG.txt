@@ -1,6 +1,6 @@
 CHANGELOG
 
 7.x-1.x-dev:
-No changes since 7.x-1.x-alpha1
+- Bug #768276 by juliangb: Fixed 'Key Site Modules' block not shown on D7.
 
 Changelog starts at 7.x-1.x-alpha1
