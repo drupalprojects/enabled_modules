@@ -96,7 +96,6 @@ function enabled_modules_schema() {
  * Implementation of hook_install().
  */
 function enabled_modules_install() {
-  drupal_install_schema('enabled_modules');
   drupal_set_message(t('"Enabled modules" module installed.  See lists of <a href="@list">presently enabled</a> and <a href="@disabled">formerly enabled</a> modules in your Logs section of Administration.  Set which roles can view enabled modules <a href="@permissions">in Access permissions</a>.', array('@list' => url('admin/logs/status'), '@disabled' => url('admin/build/modules'), '@permissions' => url('admin/user/access', array('fragment' => 'module-enabled_modules')))));
 }
 
