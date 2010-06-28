@@ -1,6 +1,7 @@
 CHANGELOG
 
-7.x-1.x-dev:
-- Bug #768276 by juliangb: Fixed 'Key Site Modules' block not shown on D7.
+7.x-1.x-alpha2:
+- Bug #790310 by juliangb: Fixed PHP warning - install fails.
+- Bug #768276 by juliangb: Partially fixed 'Key Site Modules' block not shown on D7.
 
 Changelog starts at 7.x-1.x-alpha1
