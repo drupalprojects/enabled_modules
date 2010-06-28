@@ -113,8 +113,7 @@ function enabled_modules_fetch_demo($status = 1, $reset = TRUE) {
   static $modules = array();
   if ($reset || !isset($modules) || empty($modules)) {
     $module_list = array_values(variable_get('enabled_modules_demo_list', array()));
-    $result = db_query("SELECT filename, name, info, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = :status ORDER BY name",
-array(':status' => $status));
+    $result = db_query("SELECT filename, name, info, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = :status ORDER BY name", array(':status' => $status));
     while ($module = $result->fetchObject()) {
       if (in_array($module->name, $module_list, TRUE)) {
         $module->info = unserialize($module->info);
