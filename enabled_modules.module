@@ -146,7 +146,7 @@ function theme_enabled_modules_block_list($modules, $status = 1) {
     $output .= '<div>'. $module->info['description'] .'</div>';
 
     $output .= l(t('Project page'), 'http://drupal.org/project/'. $module->name, $options = array('html'=>true));
-    /*if (isset($module->info['dependencies'])){
+    if (isset($module->info['dependencies'])){
       $output .='<ul><li>';
       $output .=t('Depends on:') .'<br>';
       $output .= enabled_modules_array_link($module->info['dependencies']);
@@ -157,7 +157,7 @@ function theme_enabled_modules_block_list($modules, $status = 1) {
       $output .=t('Required by:') .'<br>';
       $output .= enabled_modules_array_link($module->info['dependents']);
       $output .='</li></ul>';
-    }*/
+    }
     $output .= '</fieldset>';
   }
   return $output;
