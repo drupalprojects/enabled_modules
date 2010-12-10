@@ -1,7 +1,8 @@
 CHANGELOG
 
-7.x-1.x-alpha2:
+7.x-1.x-dev:
+- Bug #995078 by pillarsdotnet: Fixed Undefined array index error (E_ALL compliance).
 - Bug #790310 by juliangb: Fixed PHP warning - install fails.
 - Bug #768276 by juliangb: Partially fixed 'Key Site Modules' block not shown on D7.
 
-Changelog starts at 7.x-1.x-alpha1
+Changelog starts at 7.x-1.0-alpha1

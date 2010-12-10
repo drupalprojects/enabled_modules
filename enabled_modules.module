@@ -127,8 +127,7 @@ function enabled_modules_fetch_demo($status = 1, $reset = TRUE) {
 function enabled_modules_fetch_names($status = 1, $reset = TRUE) {
   $module_names = array();
   if ($reset || !isset($modules) || empty($modules)) {
-    $result = db_query("SELECT filename, name, info, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = :status ORDER BY name",
-array(':status' => $status));
+    $result = db_query("SELECT filename, name, info, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = :status ORDER BY name", array(':status' => $status));
     while ($module = $result->fetchObject()) {
       $module_names[$module->name] = $module->name;
     }
@@ -137,22 +136,22 @@ array(':status' => $status));
 }
 
 function theme_enabled_modules_block_list($modules, $status = 1) {
-  drupal_add_js('misc/collapse.js');
+  //drupal_add_js('misc/collapse.js');
   $output = '';
 
   foreach ($modules as $module) {
-    $output .= '<fieldset class="collapsible collapsed"><legend>' .$module->name .'</legend>';
+    $output .= '<fieldset class="collapsible collapsed"><legend>' . $module->name .'</legend>';
     $output .= '<div>Version: '. $module->info['version'] .'</div>';
     $output .= '<div>'. $module->info['description'] .'</div>';
 
     $output .= l(t('Project page'), 'http://drupal.org/project/'. $module->name, $options = array('html'=>true));
-    if (isset($module->info['dependencies'])){
+    if (isset($module->info['dependencies'])) {
       $output .='<ul><li>';
       $output .=t('Depends on:') .'<br>';
       $output .= enabled_modules_array_link($module->info['dependencies']);
       $output .='</li></ul>';
     }
-    if (isset($module->info['dependents'])){
+    if (isset($module->info['dependents'])) {
       $output .='<ul><li>';
       $output .=t('Required by:') .'<br>';
       $output .= enabled_modules_array_link($module->info['dependents']);
@@ -198,6 +197,9 @@ function enabled_modules_system_info_alter($info, $file) {
     // Ensure all array elements are present
     if (!isset($info['package'])) {
       $info['package'] = '';
+    }
+    if (!isset($info['version'])) {
+      $info['version'] = '';
     }
     if (!isset($info['project'])) {
       $info['project'] = '';
