@@ -14,7 +14,8 @@ class enabled_modules_handler_field_administer extends views_handler_field {
       $module = basename($values->{$this->field_alias}, '.module');
       
       // Load admin tasks links
-      $admin_tasks = system_get_module_admin_tasks($module);
+      $info = system_get_info('module', $module);
+      $admin_tasks = system_get_module_admin_tasks($module, $info);
       
       // Check for help links.
       if (module_invoke($module, 'help', "admin/help#$module", array())) {
