@@ -1,6 +1,6 @@
 CHANGELOG
 
-7.x-1.x-dev:
+7.x-1.0-beta1:
 - Bug #1037496 by juliangb | torstenzenk: Fixed Massive Errors when clicking admin/reports/enabled_modules() link in navigation block.
 - Bug #995078 by pillarsdotnet: Fixed Undefined array index error (E_ALL compliance).
 - Bug #790310 by juliangb: Fixed PHP warning - install fails.
