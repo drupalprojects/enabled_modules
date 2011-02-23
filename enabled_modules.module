@@ -91,10 +91,14 @@ function enabled_modules_help($path, $arg) {
   }
 
 /**
- * Implementation of hook_perm().
+ * Implementation of hook_permission().
  */
-function enabled_modules_perm() {
-  return array('view enabled modules');
+function enabled_modules_permission() {
+  return array(
+    'view enabled modules' => array(
+      'title' => t('View Enabled Modules page'),
+    ),
+  );
 }
 
 /**
