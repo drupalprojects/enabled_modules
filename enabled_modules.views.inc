@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function enabled_modules_views_data() {
   return array(

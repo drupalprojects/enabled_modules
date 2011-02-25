@@ -1,5 +1,4 @@
 <?php
-// $Id$
 /**
  * @function
  * Field handler to show whether module code is present

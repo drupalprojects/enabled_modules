@@ -1,4 +1,3 @@
-; $Id$
 
 name = Enabled modules
 description = Show enabled, missing, and recently toggled modules.
