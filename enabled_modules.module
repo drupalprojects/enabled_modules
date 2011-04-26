@@ -139,39 +139,35 @@ function enabled_modules_fetch_names($status = 1, $reset = TRUE) {
 }
 
 function theme_enabled_modules_block_list($modules, $status = 1) {
-  //drupal_add_js('misc/collapse.js');
   $output = '';
 
   foreach ($modules as $module) {
-    $output .= '<fieldset class="collapsible collapsed"><legend>' . $module->name .'</legend>';
-    $output .= '<div>Version: '. $module->info['version'] .'</div>';
+    $output .= '<div><h3>' . l($module->name, 'http://drupal.org/project/'. $module->name) .'</h3>';
+    $output .= '<div><em>'. $module->info['version'] .'</em></div>';
     $output .= '<div>'. $module->info['description'] .'</div>';
 
-    $output .= l(t('Project page'), 'http://drupal.org/project/'. $module->name, $options = array('html'=>true));
-    if (isset($module->info['dependencies'])) {
+    if (isset($module->info['dependencies']) && !empty($module->info['dependencies'])) {
       $output .='<ul><li>';
-      $output .=t('Depends on:') .'<br>';
-      $output .= enabled_modules_array_link($module->info['dependencies']);
+      $output .=t('Depends on: ') . enabled_modules_array_link($module->info['dependencies']);
       $output .='</li></ul>';
     }
-    if (isset($module->info['dependents'])) {
+    if (isset($module->info['dependents']) && !empty($module->info['dependents'])) {
       $output .='<ul><li>';
-      $output .=t('Required by:') .'<br>';
-      $output .= enabled_modules_array_link($module->info['dependents']);
+      $output .=t('Required by: ') . enabled_modules_array_link($module->info['dependents']);
       $output .='</li></ul>';
     }
-    $output .= '</fieldset>';
+    $output .= '</div>';
   }
   return $output;
 }
 
 function enabled_modules_array_link($array) {
-  foreach($array as $key => $link){
-    $output .= l($link, 'http://drupal.org/project/'. $link, $options = array('html => TRUE'));
-    $output .= '<br />';
+  foreach ($array as $key => $link) {
+    $link = l($link, 'http://drupal.org/project/'. $link);
+    $array[$key] = $link;
   }
-  return $output;
- }
+  return implode(', ', $array);
+}
 
 /**
  * @function
