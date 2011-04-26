@@ -275,6 +275,20 @@ function enabled_modules_views_data() {
           'handler' => 'views_handler_sort',
         ),
       ),
+      'php' => array(
+        'title' => t('PHP'),
+        'help' => t('The version of PHP required by this module.'),
+        'field' => array(
+          'click sortable' => TRUE,
+          'handler' => 'views_handler_field',
+        ),
+        'filter' => array(
+          'handler' => 'views_handler_filter_string',
+        ),
+        'sort' => array(
+          'handler' => 'views_handler_sort',
+        ),
+      ),
       // PSEUDO FIELDS
       'code' => array(
         'title' => t('Code'),
