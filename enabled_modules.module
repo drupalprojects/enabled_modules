@@ -142,7 +142,7 @@ function theme_enabled_modules_block_list($modules, $status = 1) {
   $output = '';
 
   foreach ($modules as $module) {
-    $output .= '<div><h3>' . l($module->name, 'http://drupal.org/project/'. $module->name) .'</h3>';
+    $output .= '<div><h3>' . l($module->name, 'http://drupal.org/project/'. $module->info['project']) .'</h3>';
     $output .= '<div><em>'. $module->info['version'] .'</em></div>';
     $output .= '<div>'. $module->info['description'] .'</div>';
 
