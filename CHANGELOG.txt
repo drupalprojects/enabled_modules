@@ -1,6 +1,7 @@
 CHANGELOG
 
 7.x-1.x-dev:
+- Bug #1182362 by juliangb | Eric_A: Fixed description column not long enough.
 - Bug #1071148 by juliangb: Fixed Permission doesn't work (fails safe).
 
 7.x-1.0-beta1:
