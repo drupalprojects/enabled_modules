@@ -1,6 +1,9 @@
 CHANGELOG
 
+6.x-1.x-dev:
+Bug #1182362 by juliangb | Eric_A: Fixed description column not long enough.
+
 6.x-1.0:
-#766296 by juliangb: Partially Fixed 'Key Site Modules' block confuses module and project.
+Bug #766296 by juliangb: Partially Fixed 'Key Site Modules' block confuses module and project.
 
 Changelog starts at 6.x-1.x-beta1
