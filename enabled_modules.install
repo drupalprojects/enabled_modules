@@ -26,10 +26,9 @@ function enabled_modules_schema() {
         ),
         'description' => array(
           'description' => 'A description of the module',
-          'type' => 'varchar',
+          'type' => 'text',
           'size' => 'normal',
-          'default' => '',
-          'length' => '256',
+          'length' => '1000',
         ),
         'package' => array(
           'description' => 'The package for the modules page',
@@ -239,5 +238,22 @@ function enabled_modules_update_6103() {
     'length' => '512',
   ));
   
+  return $ret;
+}
+
+/**
+ * @function
+ * Increases the size of the description field
+ */
+function enabled_modules_update_6104() {
+  $ret = array();
+
+  db_change_field($ret, 'enabled_modules_system', 'description', 'description', array(
+    'description' => 'A description of the module',
+    'type' => 'text',
+    'size' => 'normal',
+    'length' => '1000',
+  ));
+
   return $ret;
 }
