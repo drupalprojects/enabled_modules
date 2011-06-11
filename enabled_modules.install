@@ -245,15 +245,11 @@ function enabled_modules_update_6103() {
  * Increases the size of the description field
  */
 function enabled_modules_update_7101() {
-  $ret = array();
-
   db_change_field('enabled_modules_system', 'description', 'description', array(
     'description' => 'The name of the module',
     'type' => 'text',
     'size' => 'normal',
     'length' => '1000',
   ));
-
-  return $ret;
 }
 
