@@ -134,10 +134,9 @@ function enabled_modules_update_6101() {
         ),
         'description' => array(
           'description' => 'A description of the module',
-          'type' => 'varchar',
+          'type' => 'text',
           'size' => 'normal',
-          'default' => '',
-          'length' => '256',
+          'length' => '1000',
         ),
         'package' => array(
           'description' => 'The package for the modules page',
@@ -238,6 +237,23 @@ function enabled_modules_update_6103() {
     'length' => '512',
   ));
   
+  return $ret;
+}
+
+/**
+ * @function
+ * Increases the size of the description field
+ */
+function enabled_modules_update_7101() {
+  $ret = array();
+
+  db_change_field('enabled_modules_system', 'description', 'description', array(
+    'description' => 'The name of the module',
+    'type' => 'text',
+    'size' => 'normal',
+    'length' => '1000',
+  ));
+
   return $ret;
 }
 
