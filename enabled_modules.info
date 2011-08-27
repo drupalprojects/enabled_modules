@@ -5,10 +5,8 @@ package = Development
 core = 7.x
 
 dependencies[] = views
+dependencies[] = views_system
 
 files[] = enabled_modules.install
 files[] = enabled_modules.module
-files[] = enabled_modules.views.inc
 files[] = enabled_modules.views_default.inc
-files[] = enabled_modules_handler_field_code.inc
-files[] = enabled_modules_handler_field_administer.inc

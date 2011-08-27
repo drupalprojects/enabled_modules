@@ -8,206 +8,120 @@ function enabled_modules_views_default_views() {
    * View 'enabled_modules_list'
    */
   $view = new view;
-  $view->name = 'enabled_modules_list';
-  $view->description = 'A view designed for anybody to see, listing the enabled modules in this Drupal installation.';
-  $view->tag = 'enabled_modules';
-  $view->view_php = '';
+  $view->name = 'enabled_modules';
+  $view->description = '';
+  $view->tag = 'default';
   $view->base_table = 'system';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->human_name = 'Enabled Modules';
+  $view->core = 7;
+  $view->api_version = 3;
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'project' => array(
-      'label' => 'Project',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 1,
-        'path' => 'http://drupal.org/project/[project]',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'strip_tags' => 0,
-        'html' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'project',
-      'table' => 'enabled_modules_system',
-      'field' => 'project',
-      'relationship' => 'none',
-    ),
-    'name' => array(
-      'label' => 'Name',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'strip_tags' => 0,
-        'html' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'name',
-      'table' => 'system',
-      'field' => 'name',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-    'name_1' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '[name_1] ([name])',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'strip_tags' => 0,
-        'html' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'name_1',
-      'table' => 'enabled_modules_system',
-      'field' => 'name',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'project' => array(
-      'order' => 'ASC',
-      'id' => 'project',
-      'table' => 'enabled_modules_system',
-      'field' => 'project',
-      'relationship' => 'none',
-    ),
-    'name' => array(
-      'order' => 'ASC',
-      'id' => 'name',
-      'table' => 'enabled_modules_system',
-      'field' => 'name',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'type' => array(
-      'operator' => '=',
-      'value' => 'module',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 1,
-      'id' => 'type',
-      'table' => 'system',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'system',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'package' => array(
-      'operator' => '!=',
-      'value' => 'Core - required',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 1,
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'perm',
-    'perm' => 'view enabled modules',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'time',
-    'results_lifespan' => '21600',
-    'output_lifespan' => '21600',
-  ));
-  $handler->override_option('title', 'Enabled Modules');
-  $handler->override_option('header', '<strong>This page shows the Drupal modules that have been used to build this site.</strong>
 
-  Click on the project name to visit the project page on Drupal.org.');
-  $handler->override_option('header_format', '1');
-  $handler->override_option('header_empty', 0);
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'grid');
-  $handler->override_option('style_options', array(
-    'grouping' => 'project',
-    'columns' => '4',
-    'alignment' => 'horizontal',
-  ));
-  $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'enabled_modules');
-  $handler->override_option('menu', array(
-    'type' => 'normal',
-    'title' => 'Enabled Modules',
-    'description' => 'A list of the Drupal modules enabled on this website',
-    'weight' => '0',
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-  ));
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Enabled Modules';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'view enabled modules';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['grouping'] = 'info_project';
+  $handler->display->display_options['style_options']['columns'] = '3';
+  $handler->display->display_options['style_options']['fill_single_line'] = 0;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: System: Display name */
+  $handler->display->display_options['fields']['info_name']['id'] = 'info_name';
+  $handler->display->display_options['fields']['info_name']['table'] = 'system';
+  $handler->display->display_options['fields']['info_name']['field'] = 'info_name';
+  $handler->display->display_options['fields']['info_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['info_name']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['info_name']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['info_name']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['info_name']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['info_name']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['info_name']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['info_name']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['info_name']['hide_alter_empty'] = 0;
+  /* Field: System: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'system';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['name']['alter']['text'] = '[info_name] ([name])';
+  $handler->display->display_options['fields']['name']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['name']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['name']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['name']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['name']['hide_alter_empty'] = 0;
+  /* Field: System: Project */
+  $handler->display->display_options['fields']['info_project']['id'] = 'info_project';
+  $handler->display->display_options['fields']['info_project']['table'] = 'system';
+  $handler->display->display_options['fields']['info_project']['field'] = 'info_project';
+  $handler->display->display_options['fields']['info_project']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['info_project']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['path'] = 'http://drupal.org/[info_project]';
+  $handler->display->display_options['fields']['info_project']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['external'] = 1;
+  $handler->display->display_options['fields']['info_project']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['info_project']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['info_project']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['info_project']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['info_project']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['info_project']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['info_project']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['info_project']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['info_project']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['info_project']['system_info_project_link'] = 1;
+  /* Filter criterion: System: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'system';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'module' => 'module',
+  );
+  /* Filter criterion: System: Status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'system';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['path'] = 'enabled-modules';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Enabled Modules';
+  $handler->display->display_options['menu']['weight'] = '0';
+
   $views[$view->name] = $view;
 
   /*
@@ -215,854 +129,250 @@ function enabled_modules_views_default_views() {
    */
   $view = new view;
   $view->name = 'enabled_modules_admin';
-  $view->description = 'A view designed for site administrators, listing enabled modules in this Drupal installation with links to administer.';
-  $view->tag = 'enabled_modules';
-  $view->view_php = '';
+  $view->description = '';
+  $view->tag = 'default';
   $view->base_table = 'system';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->human_name = 'Enabled Modules_admin';
+  $view->core = 7;
+  $view->api_version = 3;
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'package' => array(
-      'label' => 'Package',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => 'Other',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Enabled Modules';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access site reports';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'filename' => 'filename',
+    'info_configure' => 'info_configure',
+    'info_description' => 'info_description',
+    'info_name' => 'info_name',
+    'info_package' => 'info_package',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
     'filename' => array(
-      'label' => 'Filename',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'filename',
-      'table' => 'system',
-      'field' => 'filename',
-      'relationship' => 'none',
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
     ),
-    'name' => array(
-      'label' => 'Name',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<strong>[name]</strong><br />([filename])',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'enabled_modules_system',
-      'field' => 'name',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
+    'info_configure' => array(
+      'align' => '',
+      'separator' => '',
     ),
-    'description' => array(
-      'label' => 'Description',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'description',
-      'table' => 'enabled_modules_system',
-      'field' => 'description',
-      'relationship' => 'none',
+    'info_description' => array(
+      'align' => '',
+      'separator' => '',
     ),
-    'code' => array(
-      'label' => 'Code',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'code',
-      'table' => 'enabled_modules_system',
-      'field' => 'code',
-      'relationship' => 'none',
+    'info_name' => array(
+      'align' => '',
+      'separator' => '',
     ),
-    'administer' => array(
-      'id' => 'administer',
-      'table' => 'enabled_modules_system',
-      'field' => 'administer',
+    'info_package' => array(
+      'align' => '',
+      'separator' => '',
     ),
-  ));
-  $handler->override_option('sorts', array(
-    'package' => array(
-      'order' => 'ASC',
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'type' => array(
-      'operator' => '=',
-      'value' => 'module',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 0,
-      'id' => 'type',
-      'table' => 'system',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'system',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'perm',
-    'perm' => 'access site reports',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Enabled Modules');
-  $handler->override_option('header', '<p><strong>All enabled modules are listed here. If a module\'s codebase is not found, the module is marked missing.</strong></p>
+  );
+  $handler->display->display_options['style_options']['override'] = 1;
+  $handler->display->display_options['style_options']['sticky'] = 0;
+  $handler->display->display_options['style_options']['empty_table'] = 0;
+  /* Field: System: Filename */
+  $handler->display->display_options['fields']['filename']['id'] = 'filename';
+  $handler->display->display_options['fields']['filename']['table'] = 'system';
+  $handler->display->display_options['fields']['filename']['field'] = 'filename';
+  $handler->display->display_options['fields']['filename']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['filename']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['filename']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['filename']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['filename']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['filename']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['filename']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['filename']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['filename']['hide_alter_empty'] = 0;
+  /* Field: System: Package */
+  $handler->display->display_options['fields']['info_package']['id'] = 'info_package';
+  $handler->display->display_options['fields']['info_package']['table'] = 'system';
+  $handler->display->display_options['fields']['info_package']['field'] = 'info_package';
+  $handler->display->display_options['fields']['info_package']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['info_package']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['info_package']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['info_package']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['info_package']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['info_package']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['info_package']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['info_package']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['info_package']['hide_alter_empty'] = 0;
+  /* Field: System: Display name */
+  $handler->display->display_options['fields']['info_name']['id'] = 'info_name';
+  $handler->display->display_options['fields']['info_name']['table'] = 'system';
+  $handler->display->display_options['fields']['info_name']['field'] = 'info_name';
+  $handler->display->display_options['fields']['info_name']['label'] = 'Name';
+  $handler->display->display_options['fields']['info_name']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['info_name']['alter']['text'] = '<strong>[info_name]</strong> ([filename])';
+  $handler->display->display_options['fields']['info_name']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['info_name']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['info_name']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['info_name']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['info_name']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['info_name']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['info_name']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['info_name']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['info_name']['hide_alter_empty'] = 0;
+  /* Field: System: Description */
+  $handler->display->display_options['fields']['info_description']['id'] = 'info_description';
+  $handler->display->display_options['fields']['info_description']['table'] = 'system';
+  $handler->display->display_options['fields']['info_description']['field'] = 'info_description';
+  $handler->display->display_options['fields']['info_description']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['info_description']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['info_description']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['info_description']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['info_description']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['info_description']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['info_description']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['info_description']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['info_description']['hide_alter_empty'] = 0;
+  /* Field: System: Configure */
+  $handler->display->display_options['fields']['info_configure']['id'] = 'info_configure';
+  $handler->display->display_options['fields']['info_configure']['table'] = 'system';
+  $handler->display->display_options['fields']['info_configure']['field'] = 'info_configure';
+  $handler->display->display_options['fields']['info_configure']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['info_configure']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['info_configure']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['info_configure']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['info_configure']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['info_configure']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['info_configure']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['info_configure']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['info_configure']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['info_configure']['system_info_configure_link'] = 1;
+  /* Filter criterion: System: Status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'system';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter criterion: System: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'system';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'module' => 'module',
+  );
 
-  <p>Your overall Drupal site is presently installed in this directory: <code><?php print getcwd() ?></code></p>
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['path'] = 'admin/reports/enabled-modules/enabled';
+  $handler->display->display_options['menu']['type'] = 'default tab';
+  $handler->display->display_options['menu']['title'] = 'Enabled';
+  $handler->display->display_options['menu']['weight'] = '-10';
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Enabled Modules';
+  $handler->display->display_options['tab_options']['weight'] = '0';
 
-  <hr />');
-  $handler->override_option('header_format', '3');
-  $handler->override_option('header_empty', 0);
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-    'grouping' => 'package',
-    'override' => 1,
-    'sticky' => 0,
-    'order' => 'asc',
-    'columns' => array(
-      'package' => 'package',
-      'name' => 'name',
-      'name_1' => 'name_1',
-    ),
-    'info' => array(
-      'package' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'name' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'name_1' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-    ),
-    'default' => '-1',
-  ));
+  /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'admin/reports/enabled_modules/list');
-  $handler->override_option('menu', array(
-    'type' => 'default tab',
-    'title' => 'Enabled',
-    'description' => '',
-    'weight' => '-1',
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'normal',
-    'title' => 'Enabled Modules',
-    'description' => '',
-    'weight' => '0',
-    'name' => 'navigation',
-  ));
-  $views[$view->name] = $view;
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Disabled Modules';
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: System: Status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'system';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '0';
+  /* Filter criterion: System: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'system';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'module' => 'module',
+  );
+  /* Filter criterion: System: Schema version */
+  $handler->display->display_options['filters']['schema_version']['id'] = 'schema_version';
+  $handler->display->display_options['filters']['schema_version']['table'] = 'system';
+  $handler->display->display_options['filters']['schema_version']['field'] = 'schema_version';
+  $handler->display->display_options['filters']['schema_version']['operator'] = '!=';
+  $handler->display->display_options['filters']['schema_version']['value']['value'] = '-1';
+  $handler->display->display_options['path'] = 'admin/reports/enabled-modules/disabled';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Disabled';
+  $handler->display->display_options['menu']['weight'] = '0';
 
-  /*
-   * View 'enabled_modules_admin_disabled'
-   */
-  $view = new view;
-  $view->name = 'enabled_modules_admin_disabled';
-  $view->description = 'A view designed for site administrators, listing the disabled modules in this Drupal installation.';
-  $view->tag = 'enabled_modules';
-  $view->view_php = '';
-  $view->base_table = 'system';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'package' => array(
-      'label' => 'Package',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => 'Other',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
-    'filename' => array(
-      'label' => 'Filename',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'filename',
-      'table' => 'system',
-      'field' => 'filename',
-      'relationship' => 'none',
-    ),
-    'name' => array(
-      'label' => 'Name',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<strong>[name]</strong><br />([filename])',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'enabled_modules_system',
-      'field' => 'name',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-    'description' => array(
-      'label' => 'Description',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'description',
-      'table' => 'enabled_modules_system',
-      'field' => 'description',
-      'relationship' => 'none',
-    ),
-    'code' => array(
-      'label' => 'Code',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'code',
-      'table' => 'enabled_modules_system',
-      'field' => 'code',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'package' => array(
-      'order' => 'ASC',
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'type' => array(
-      'operator' => '=',
-      'value' => 'module',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 0,
-      'id' => 'type',
-      'table' => 'system',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '0',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'system',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'schema_version' => array(
-      'operator' => '!=',
-      'value' => '-1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 1,
-      'id' => 'schema_version',
-      'table' => 'system',
-      'field' => 'schema_version',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'perm',
-    'perm' => 'access site reports',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Disabled Modules');
-  $handler->override_option('header', '<p><strong>All disabled modules are listed here. If a module\'s codebase is not found, the module is marked missing.</strong></p>
-
-  <p>Your overall Drupal site is presently installed in this directory: <code><?php print getcwd() ?></code></p>
-
-  <hr />');
-  $handler->override_option('header_format', '3');
-  $handler->override_option('header_empty', 1);
-  $handler->override_option('empty', '<p><strong>There are no disabled (previously enabled) modules in the system.</strong></p>');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-    'grouping' => 'package',
-    'override' => 1,
-    'sticky' => 1,
-    'order' => 'asc',
-    'columns' => array(
-      'package' => 'package',
-      'filename' => 'filename',
-      'name' => 'name',
-      'description' => 'description',
-      'nothing' => 'nothing',
-    ),
-    'info' => array(
-      'package' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'filename' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'name' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'description' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'nothing' => array(
-        'separator' => '',
-      ),
-    ),
-    'default' => '-1',
-  ));
-  $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'admin/reports/enabled_modules/disabled');
-  $handler->override_option('menu', array(
-    'type' => 'tab',
-    'title' => 'Disabled',
-    'description' => '',
-    'weight' => '0',
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $views[$view->name] = $view;
-
-  /*
-   * View 'enabled_modules_admin_not_inst'
-   */
-  $view = new view;
-  $view->name = 'enabled_modules_admin_not_inst';
-  $view->description = 'A view designed for site administrators, listing the modules in this Drupal installation that are not installed.';
-  $view->tag = 'enabled_modules';
-  $view->view_php = '';
-  $view->base_table = 'system';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'package' => array(
-      'label' => 'Package',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => 'Other',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
-    'filename' => array(
-      'label' => 'Filename',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 1,
-      'id' => 'filename',
-      'table' => 'system',
-      'field' => 'filename',
-      'relationship' => 'none',
-    ),
-    'name' => array(
-      'label' => 'Name',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<strong>[name]</strong><br />([filename])',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'enabled_modules_system',
-      'field' => 'name',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-    'description' => array(
-      'label' => 'Description',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'description',
-      'table' => 'enabled_modules_system',
-      'field' => 'description',
-      'relationship' => 'none',
-    ),
-    'code' => array(
-      'label' => 'Code',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'code',
-      'table' => 'enabled_modules_system',
-      'field' => 'code',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'package' => array(
-      'order' => 'ASC',
-      'id' => 'package',
-      'table' => 'enabled_modules_system',
-      'field' => 'package',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'type' => array(
-      'operator' => '=',
-      'value' => 'module',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 0,
-      'id' => 'type',
-      'table' => 'system',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '0',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'system',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'schema_version' => array(
-      'operator' => '=',
-      'value' => '-1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'case' => 1,
-      'id' => 'schema_version',
-      'table' => 'system',
-      'field' => 'schema_version',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'perm',
-    'perm' => 'access site reports',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Not Installed Modules');
-  $handler->override_option('header', '<p><strong>All not installed modules are listed here. If a module\'s codebase is not found, the module is marked missing.</strong></p>
-
-  <p>Your overall Drupal site is presently installed in this directory: <code><?php print getcwd() ?></code></p>
-
-  <hr />');
-  $handler->override_option('header_format', '3');
-  $handler->override_option('header_empty', 1);
-  $handler->override_option('empty', '<p><strong>All modules in the system are installed.</strong></p>');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-    'grouping' => 'package',
-    'override' => 1,
-    'sticky' => 1,
-    'order' => 'asc',
-    'columns' => array(
-      'package' => 'package',
-      'filename' => 'filename',
-      'name' => 'name',
-      'description' => 'description',
-      'nothing' => 'nothing',
-    ),
-    'info' => array(
-      'package' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'filename' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'name' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'description' => array(
-        'sortable' => 0,
-        'separator' => '',
-      ),
-      'nothing' => array(
-        'separator' => '',
-      ),
-    ),
-    'default' => '-1',
-  ));
-  $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'admin/reports/enabled_modules/not-installed');
-  $handler->override_option('menu', array(
-    'type' => 'tab',
-    'title' => 'Not Installed',
-    'description' => '',
-    'weight' => '1',
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
+  /* Display: Page 2 */
+  $handler = $view->new_display('page', 'Page 2', 'page_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Not Installed Modules';
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: System: Status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'system';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '0';
+  /* Filter criterion: System: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'system';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'module' => 'module',
+  );
+  /* Filter criterion: System: Schema version */
+  $handler->display->display_options['filters']['schema_version']['id'] = 'schema_version';
+  $handler->display->display_options['filters']['schema_version']['table'] = 'system';
+  $handler->display->display_options['filters']['schema_version']['field'] = 'schema_version';
+  $handler->display->display_options['filters']['schema_version']['value']['value'] = '-1';
+  $handler->display->display_options['path'] = 'admin/reports/enabled-modules/not-installed';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Not installed';
+  $handler->display->display_options['menu']['weight'] = '10';
   $views[$view->name] = $view;
 
   return $views;

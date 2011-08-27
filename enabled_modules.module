@@ -175,61 +175,7 @@ function enabled_modules_array_link($array) {
  */
 function enabled_modules_views_api() {
   return array(
-    'api' => 2,
+    'api' => 3,
   );
-}
-
-/**
- * @function
- * Implements hook_system_info_alter
- */
-function enabled_modules_system_info_alter($info, $file) {
-  // This if() loop prevents a huge number of error messages from occurring before table has been created.
-  if (db_table_exists('enabled_modules_system')) {
-    // This hook is called each time a line of the {system} table is rebuilt.
-    
-    // Delete that row
-    $query = db_delete('enabled_modules_system')
-      ->condition('filename', $file->filename)
-      ->execute();
-
-    // Ensure all array elements are present
-    if (!isset($info['package'])) {
-      $info['package'] = '';
-    }
-    if (!isset($info['version'])) {
-      $info['version'] = '';
-    }
-    if (!isset($info['project'])) {
-      $info['project'] = '';
-    }
-    if (!isset($info['datestamp'])) {
-      $info['datestamp'] = NULL;
-    }
-    if (!isset($info['dependencies'])) {
-      $info['dependencies'] = NULL;
-    }
-    if (!isset($info['dependents'])) {
-      $info['dependents'] = NULL;
-    }
-
-    // Rebuild
-    $query = db_insert('enabled_modules_system')
-      ->fields(array(
-        'filename' => $file->filename,
-        'name' => $info['name'],
-        'description' => $info['description'],
-        'package' => $info['package'],
-        'version' => $info['version'],
-        'core' => $info['core'],
-        'project' => $info['project'],
-        'datestamp' => $info['datestamp'],
-        'dependencies' => serialize($info['dependencies']),
-        'dependents' => serialize($info['dependents']),
-        'php' => $info['php'],
-      ))
-      ->execute(
-    );
-  }
 }
 
