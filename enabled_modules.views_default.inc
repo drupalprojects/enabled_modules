@@ -318,6 +318,7 @@ function enabled_modules_views_default_views() {
   $handler->display->display_options['tab_options']['type'] = 'normal';
   $handler->display->display_options['tab_options']['title'] = 'Enabled Modules';
   $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'management';
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
