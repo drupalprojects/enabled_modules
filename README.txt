@@ -30,10 +30,10 @@ INSTALLATION
 CONFIGURATION
 -------------
  * Configure user permissions in Administration » People » Permissions:
-  - Users must be given the "View Enabled Modules page" permission to access views 
-    provided by this module.
- * Review the views provided by this module in Administration » Structure » Views,
-   and disable any views that are not required.
+  - Users must be given the "View Enabled Modules page" permission to access 
+    views provided by this module.
+ * Review the views provided by this module in Administration » Structure 
+   » Views, and disable any views that are not required.
 
 MAINTAINERS
 -----------
