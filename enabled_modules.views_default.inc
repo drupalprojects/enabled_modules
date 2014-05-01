@@ -1,13 +1,17 @@
 <?php
+/**
+ * @file
+ * Views hook implementations for enabled_modules.
+ */
 
 /**
- * Implementation of hook_views_default_views().
+ * Implements hook_views_default_views().
  */
 function enabled_modules_views_default_views() {
   /*
    * View 'enabled_modules_list'
    */
-  $view = new view;
+  $view = new view();
   $view->name = 'enabled_modules';
   $view->description = '';
   $view->tag = 'default';
@@ -127,7 +131,7 @@ function enabled_modules_views_default_views() {
   /*
    * View 'enabled_modules_admin'
    */
-  $view = new view;
+  $view = new view();
   $view->name = 'enabled_modules_admin';
   $view->description = '';
   $view->tag = 'default';
@@ -378,4 +382,3 @@ function enabled_modules_views_default_views() {
 
   return $views;
 }
-

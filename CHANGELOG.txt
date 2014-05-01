@@ -3,6 +3,7 @@ Enabled Modules Changelog
 All commits are added to the top of this file, at the time of commit.
 
 7.x-1.0-beta4:
+- Issue #2255375 by juliangb: Improve coding style.
 - Issue #1419696 by juliangb | Pasqualle: The admin report is not visible in 
 admin_menu.
 

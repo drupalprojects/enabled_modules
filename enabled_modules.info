@@ -1,4 +1,3 @@
-
 name = Enabled modules
 description = Show enabled, missing, and recently toggled modules.
 package = Development
@@ -6,7 +5,3 @@ core = 7.x
 
 dependencies[] = views
 dependencies[] = views_system
-
-files[] = enabled_modules.install
-files[] = enabled_modules.module
-files[] = enabled_modules.views_default.inc
