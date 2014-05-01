@@ -76,12 +76,13 @@ function enabled_modules_help($path, $arg) {
   switch ($path) {
     case 'admin/help#enabled_modules':
       $help  = '<p>' . t('The <em>enabled modules</em> module provides various listings of the modules present within a Drupal installation as follows:') . '</p>';
-      $help .= '<ul><li>'. t('A <a href="@page">page suitable for demonstration sites</a> showing the names of enabled modules by project.', array('@page' => url('enabled_modules'))) . '</li>';
+      $help .= '<ul><li>' . t('A <a href="@page">page suitable for demonstration sites</a> showing the names of enabled modules by project.', array('@page' => url('enabled_modules'))) . '</li>';
       $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing enabled modules with links to administrative functions.', array('@page' => url('admin/reports/enabled_modules'))) . '</li>';
       $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing disabled modules.', array('@page' => url('admin/reports/enabled_modules/disabled'))) . '</li>';
       $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing not installed modules present in the system.', array('@page' => url('admin/reports/enabled_modules/not-installed'))) . '</li>';
-      $help .= '<li>'. t('A block configurable to show key modules used on the site.') . '</li></ul>';
+      $help .= '<li>' . t('A block configurable to show key modules used on the site.') . '</li></ul>';
       return $help;
+
     case 'admin/reports/enabled_modules':
     case 'admin/reports/enabled_modules/list':
     case 'admin/reports/enabled_modules/disabled':
@@ -139,7 +140,7 @@ function enabled_modules_fetch_demo($status = 1, $reset = TRUE) {
  */
 function enabled_modules_fetch_names($status = 1, $reset = TRUE) {
   $module_names = array();
-  if ($reset || !isset($modules_names) || empty($modules_names)) {
+  if ($reset || !isset($module_names) || empty($module_names)) {
     $result = db_query("SELECT filename, name, info, bootstrap, schema_version FROM {system} WHERE type = 'module' AND status = :status ORDER BY name", array(':status' => $status));
     while ($module = $result->fetchObject()) {
       $module_names[$module->name] = $module->name;
@@ -161,12 +162,16 @@ function theme_enabled_modules_block_list($modules, $status = 1) {
 
     if (isset($module->info['dependencies']) && !empty($module->info['dependencies'])) {
       $output .= '<ul><li>';
-      $output .= t('Depends on: ') . enabled_modules_array_link($module->info['dependencies']);
+      $output .= t('Depends on: !links', array(
+        '!links' => enabled_modules_array_link($module->info['dependencies']),
+      ));
       $output .= '</li></ul>';
     }
     if (isset($module->info['dependents']) && !empty($module->info['dependents'])) {
       $output .= '<ul><li>';
-      $output .= t('Required by: ') . enabled_modules_array_link($module->info['dependents']);
+      $output .= t('Required by: !links', array(
+        '!links' => enabled_modules_array_link($module->info['dependents']),
+      ));
       $output .= '</li></ul>';
     }
     $output .= '</div>';
