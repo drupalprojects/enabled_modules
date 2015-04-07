@@ -76,10 +76,14 @@ function enabled_modules_help($path, $arg) {
   switch ($path) {
     case 'admin/help#enabled_modules':
       $help  = '<p>' . t('The <em>enabled modules</em> module provides various listings of the modules present within a Drupal installation as follows:') . '</p>';
-      $help .= '<ul><li>' . t('A <a href="@page">page suitable for demonstration sites</a> showing the names of enabled modules by project.', array('@page' => url('enabled_modules'))) . '</li>';
-      $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing enabled modules with links to administrative functions.', array('@page' => url('admin/reports/enabled_modules'))) . '</li>';
-      $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing disabled modules.', array('@page' => url('admin/reports/enabled_modules/disabled'))) . '</li>';
-      $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing not installed modules present in the system.', array('@page' => url('admin/reports/enabled_modules/not-installed'))) . '</li>';
+      $help .= '<ul><li>' . t('A <a href="@page">page suitable for demonstration sites</a> showing the names of enabled modules by 
+project.', array('@page' => url('enabled-modules'))) . '</li>';
+      $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing enabled modules with links to administrative 
+functions.', array('@page' => url('admin/reports/enabled-modules'))) . '</li>';
+      $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing disabled modules.', array('@page' => 
+url('admin/reports/enabled-modules/disabled'))) . '</li>';
+      $help .= '<li>' . t('A <a href="@page">page for site administrators</a> showing not installed modules present in the system.', 
+array('@page' => url('admin/reports/enabled-modules/not-installed'))) . '</li>';
       $help .= '<li>' . t('A block configurable to show key modules used on the site.') . '</li></ul>';
       return $help;
 
